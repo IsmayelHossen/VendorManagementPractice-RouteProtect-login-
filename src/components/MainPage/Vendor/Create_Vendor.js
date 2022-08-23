@@ -44,19 +44,10 @@ const Create_Vendor = () => {
     // document.getElementById("hddd").innerHTML = "";
 
     VendorInfo();
-    GetFile();
-    getfromLaravel();
+
+    // getfromLaravel();
   }, []);
-  const getfromLaravel = async () => {
-    axios
-      .get("https://localhost/OARS/api/semesterStudent/2015-16")
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((errors) => {
-        console.log(errors);
-      });
-  };
+
   const VendorInfo = async () => {
     try {
       const reponse = await VendorInfoData();
@@ -67,18 +58,7 @@ const Create_Vendor = () => {
       console.log(error);
     }
   };
-  const GetFile = async () => {
-    await axios
-      .get("http://localhost:4328/file/getfile")
-      .then((res) => {
-        setgetFileupload(res.data);
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // console.log()
-  };
+
   const {
     register,
     handleSubmit,
@@ -95,11 +75,12 @@ const Create_Vendor = () => {
 
   // submit for store vendor  data info
   const onSubmit = (data) => {
+    console.log(data);
     axios
       .post(`${API_URL}/vendor/add_vendor`, data, {
         headers: {
           "Content-Type": "application/json",
-          name: "ismayel",
+          name: "ismayel56777",
           Email: "ismayelhossen123@gmail.com",
         },
       })
@@ -121,92 +102,38 @@ const Create_Vendor = () => {
 
   //edit vendor data
 
-  const EditIndividual_vendor = async (id) => {
-    if (id) {
-      // setIndividual_data(id);
-      const response = await GetVendor_individualData_update(id);
-      if (response) {
-        console.log(id);
-        setUpdateDataFound(response.data[0]);
-        // console.log(response.data[0]);
+  const EditIndividual_vendor = async (data) => {
+    // setIndividual_data(id);
+    // const response = await GetVendor_individualData_update(id);
 
-        //   console.log(UpdateDataFound);
-      }
-    }
+    console.log(data);
+
+    const result = Vendor_Info.filter(
+      (id) => (id.ID <= data) & (id.ID >= data)
+    );
+    // setupdateFilteringdata(result[0]);
+    console.log(result[0]);
+    setUpdateDataFound(result[0]);
+    // console.log(response.data[0]);
+
+    console.log(UpdateDataFound);
   };
   const onSubmitUpdate = async (data) => {
-    if (data.CompanyName) {
-      data.CompanyName = data.CompanyName;
-    } else {
-      data.CompanyName = UpdateDataFound.COMPANYNAME;
+    console.log(data);
+    if (data.vendor_name == "") {
+      data.vendor_name = UpdateDataFound.VENDOR_NAME;
     }
 
-    if (data.ContactName) {
-      data.ContactName = data.ContactName;
-    } else {
-      data.ContactName = UpdateDataFound.CONTACTNAME;
+    if (data.category_type == "") {
+      data.category_type = UpdateDataFound.CATEGORY_TYPE;
     }
-    if (data.ContactTitle) {
-      data.ContactTitle = data.ContactTitle;
-    } else {
-      data.ContactTitle = UpdateDataFound.CONTACTTITLE;
+    if (data.agreement_type == "") {
+      data.agreement_type = UpdateDataFound.AGREEMENT_TYPE;
     }
-    if (data.Address) {
-      data.Address = data.Address;
-    } else {
-      data.Address = UpdateDataFound.ADDRESS;
+    if (data.procurement_type == "") {
+      data.procurement_type = UpdateDataFound.PROCUREMENT_TYPE;
     }
-    if (data.Street) {
-      data.Street = data.Street;
-    } else {
-      data.Street = UpdateDataFound.STREET;
-    }
-    if (data.Pcode) {
-      data.Pcode = data.Pcode;
-    } else {
-      data.Pcode = UpdateDataFound.PCODE;
-    }
-    if (data.City) {
-      data.City = data.City;
-    } else {
-      data.City = UpdateDataFound.CITY;
-    }
-    if (data.Country) {
-      data.Country = data.Country;
-    } else {
-      data.Country = UpdateDataFound.COUNTRY;
-    }
-    if (data.Mobile) {
-      data.Mobile = data.Mobile;
-    } else {
-      data.Mobile = UpdateDataFound.MOBILE;
-    }
-    if (data.Fax) {
-      data.Fax = data.Fax;
-    } else {
-      data.Fax = UpdateDataFound.FAX;
-    }
-    if (data.Fax) {
-      data.Fax = data.Fax;
-    } else {
-      data.Fax = UpdateDataFound.FAX;
-    }
-    if (data.Email) {
-      data.Email = data.Email;
-    } else {
-      data.Email = UpdateDataFound.EMAIL;
-    }
-    if (data.Website) {
-      data.Website = data.Website;
-    } else {
-      data.Website = UpdateDataFound.WEBSITE;
-    }
-    if (data.id) {
-      data.id = data.id;
-    } else {
-      data.id = UpdateDataFound.ID;
-    }
-
+    console.log(data);
     if (data) {
       let id = UpdateDataFound.ID;
       const updateResult = await axios
@@ -243,11 +170,6 @@ const Create_Vendor = () => {
       dangerMode: true,
     }).then(async (result) => {
       if (result) {
-        // var Values = Vendor_Info.indexOf(id);
-
-        // Vendor_Info.splice(Values, 1);
-
-        // setVendorInfo([...Vendor_Info]);
         const abc = await axios
           .delete(`${API_URL}/vendor/delete_vendor/${id}`)
           .then((response) => {
@@ -263,21 +185,6 @@ const Create_Vendor = () => {
       }
     });
   };
-  const DeleteFunctionality = async (email, image) => {
-    await axios
-      .delete(`${API_URL}/file/filedelete/${email}/${image}`)
-      .then((res) => {
-        console.log(res);
-        swal({
-          title: "Deleted Successfully",
-          icon: "success",
-          button: "Ok!",
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   //search vendor
   useEffect(() => {
@@ -285,6 +192,7 @@ const Create_Vendor = () => {
       VendorInfo();
     } else {
       const WithOutSpaciallChar = search_vendor_data
+        .toLowerCase()
         // .replace(/\//g, "")
         // .replace(/ /g, "")
         // .replace(/[^\w\s]/gi, "");
@@ -304,63 +212,52 @@ const Create_Vendor = () => {
   }, [search_vendor_data]);
 
   //table
+  let year = 4;
   const columns = [
     {
-      title: "Company Name",
-      dataIndex: "COMPANYNAME",
+      title: "Vendor Name",
+      dataIndex: "VENDOR_NAME",
     },
     {
-      title: "Contact Name",
-      dataIndex: "CONTACTNAME",
-    },
-
-    {
-      title: "Contact Title",
-      dataIndex: "CONTACTTITLE",
+      title: "Agreement Institution",
+      dataIndex: "AGREEMENT_TYPE",
     },
 
     {
-      title: " Address",
-      dataIndex: "ADDRESS",
+      title: "Vendor Category",
+      dataIndex: "CATEGORY_TYPE",
     },
 
     {
-      title: "City",
-      dataIndex: "CITY",
+      title: " Procurement Type",
+      dataIndex: "PROCUREMENT_TYPE",
     },
+
     {
-      title: "Street",
-      dataIndex: "STREET",
+      title: "Financial Year",
+      render: (text, record) => (
+        <>
+          <p>{year++}</p>
+        </>
+      ),
     },
+
     {
-      title: "Postal Code",
-      dataIndex: "PCODE",
-    },
-    {
-      title: "Country",
-      dataIndex: "COUNTRY",
-    },
-    {
-      title: "Mobile",
-      dataIndex: "MOBILE",
-    },
-    {
-      title: "Fax",
-      dataIndex: "FAX",
-    },
-    {
-      title: "Email",
-      dataIndex: "EMAIL",
-    },
-    {
-      title: "Website",
-      dataIndex: "WEBSITE",
+      title: "View Details",
+      render: (text, record) => (
+        <Link
+          class="btn btn-primary btn-small"
+          to={`/vendor/details/add/${record.ID}`}
+        >
+          <span class="fa fa-eye"></span>
+        </Link>
+      ),
     },
 
     {
       title: "Action",
       render: (text, record) => (
-        <div className="dropdown dropdown-action text-right">
+        <div className="dropdown dropdown-action text-left">
           <a
             href="#"
             className="action-icon dropdown-toggle"
@@ -395,7 +292,10 @@ const Create_Vendor = () => {
       ),
     },
   ];
-
+  const windowOpen = () => {
+    // window.moveTo();
+    window.close();
+  };
   return (
     <>
       <Helmet>
@@ -414,7 +314,7 @@ const Create_Vendor = () => {
                   className="text-center mx-auto mb-3 text-uppercase fddd"
                   id="hddd"
                 >
-                  Welcome To Vendor Management
+                  Welcome To Vendor
                 </h4>
               </div>
               {/* header */}
@@ -457,7 +357,7 @@ const Create_Vendor = () => {
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 style={{ color: "rgba(17, 123, 108, 0.85)" }}>
-                        <i class="fa fa-plus"></i> Add Vendor
+                        <i class="fa fa-plus"></i> Add Vendor{" "}
                       </h5>
                       <button
                         type="button"
@@ -478,161 +378,21 @@ const Create_Vendor = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>{" "}
-                              Company/Person Name
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="    Company/Person Name"
-                                id="validationDefault01"
-                                {...register("CompanyName", {
-                                  required: true,
-                                })}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Contact Name
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Contact Name"
-                                id="validationDefault02"
-                                {...register("ContactName")}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Contact
-                              Title
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Contact Title"
-                                id="validationDefault01"
-                                {...register("ContactTitle", {
-                                  required: true,
-                                })}
-                              />
-                            </div>
-                            {/* 
-                            {errors.ContactTitle && (
-                              <p className="errorsMsg">
-                                Contact Title Required
-                              </p>
-                            )} */}
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Address
-                            </label>
-                            <div className="col-sm-8">
-                              <textarea
-                                class="form-control Vendor-form-control"
-                                placeholder=" Address"
-                                id="validationDefault05"
-                                {...register("Address", {
-                                  required: true,
-                                  minLength: 10,
-                                })}
-                                rows="1"
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Street
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Street"
-                                id="validationDefault01"
-                                {...register("Street", {})}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Postal Code
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                placeholder="Postal Code"
-                                id="validationDefault01"
-                                {...register("Pcode", {})}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> City
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="City"
-                                id="validationDefault01"
-                                {...register("City", {
-                                  required: true,
-                                })}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Country
+                              <span style={{ color: "red" }}>*</span> Agreement
+                              Type Institution
                             </label>
                             <div className="col-sm-8">
                               <select
-                                className="  form-control Vendor-form-control "
-                                {...register("Country", {
+                                class="form-select Vendor-form-control"
+                                {...register("agreement_type", {
                                   required: true,
                                 })}
                               >
-                                <option value="">Select...</option>
-                                <option value="A">Option A</option>
-                                <option value="B">Option B</option>
+                                <option value="">
+                                  Agreement Type Institution
+                                </option>
+                                <option value="Govt.">Govt.</option>
+                                <option value="Private">Private</option>
                               </select>
                             </div>
                           </div>
@@ -642,45 +402,50 @@ const Create_Vendor = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>Mobile
+                              <span style={{ color: "red" }}>*</span>
+                              Vendor Category
                             </label>
                             <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Mobile number"
-                                {...register("Mobile", {
+                              <select
+                                class="form-select Vendor-form-control"
+                                {...register("category_type", {
                                   required: true,
-                                  pattern: /^01[35-9]\d{8}/,
-                                  maxLength: 11,
                                 })}
-                              />
+                              >
+                                <option value="">Select Vendor</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Contractor">Contractor</option>
+                                <option value="Contractor">Consultant</option>
+                              </select>
                             </div>
-
-                            {errors.Mobile && (
-                              <p className="errorsMsg">
-                                {" "}
-                                Valid Mobile Number Required
-                              </p>
-                            )}
                           </div>
+
                           <div className="mb-2 row">
                             <label
                               for="inputtext"
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              Fax
+                              <span style={{ color: "red" }}>*</span>Procurement
+                              Type
                             </label>
                             <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder="Fax Number"
-                                {...register("Fax", {})}
-                              />
+                              <select
+                                class="form-select Vendor-form-control"
+                                {...register("procurement_type", {
+                                  required: true,
+                                })}
+                              >
+                                <option value="">
+                                  Select procurement_type
+                                </option>
+                                <option value="DPM">DPM</option>
+                                <option value="RFQ">RFQ</option>
+                                <option value="LTM">LTM</option>
+                                <option value="OTM">OTM</option>
+                                <option value="OSTM">OSTM</option>
+                                <option value="QCBS">QCBS</option>
+                              </select>
                             </div>
                           </div>
                           <div className="mb-2 row">
@@ -689,54 +454,16 @@ const Create_Vendor = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              Website
+                              <span style={{ color: "red" }}>*</span>{" "}
+                              Company/Person Name
                             </label>
                             <div className="col-sm-8">
                               <input
                                 type="text"
                                 class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Website"
-                                {...register("Website", {})}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span>Email
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="email"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Email"
-                                {...register("Email", {
-                                  pattern: /@/,
-                                  required: true,
-                                })}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span>Id
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                placeholder=" Id"
-                                id="validationDefault07"
-                                {...register("id", {
+                                placeholder="    Company/Person Name"
+                                id="validationDefault01"
+                                {...register("vendor_name", {
                                   required: true,
                                 })}
                               />
@@ -849,8 +576,8 @@ const Create_Vendor = () => {
                                 type="text"
                                 class="form-control Vendor-form-control"
                                 placeholder=" Company/Person Name"
-                                defaultValue={UpdateDataFound.COMPANYNAME}
-                                {...register1("CompanyName")}
+                                defaultValue={UpdateDataFound.VENDOR_NAME}
+                                {...register1("vendor_name")}
                               />
                             </div>
                           </div>
@@ -860,135 +587,33 @@ const Create_Vendor = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              Contact Name
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Contact Name"
-                                defaultValue={UpdateDataFound.CONTACTNAME}
-                                {...register1("ContactName")}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Contact
-                              Title
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Contact Title"
-                                defaultValue={UpdateDataFound.CONTACTTITLE}
-                                {...register1("ContactTitle")}
-                              />
-                            </div>
-                            {/* 
-                            {errors.ContactTitle && (
-                              <p className="errorsMsg">
-                                Contact Title Required
-                              </p>
-                            )} */}
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Address
-                            </label>
-                            <div className="col-sm-8">
-                              <textarea
-                                class="form-control Vendor-form-control"
-                                defaultValue={UpdateDataFound.ADDRESS}
-                                {...register1("Address", {})}
-                                rows="1"
-                              ></textarea>
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Street
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Street"
-                                id="validationDefault01"
-                                defaultValue={UpdateDataFound.STREET}
-                                {...register1("Street", {})}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Postal Code
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="Postal Code"
-                                id="validationDefault01"
-                                {...register1("Pcode", {})}
-                                defaultValue={UpdateDataFound.PCODE}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> City
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                placeholder="City"
-                                id="validationDefault01"
-                                {...register1("City", {})}
-                                defaultValue={UpdateDataFound.CITY}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> Country
+                              <span style={{ color: "red" }}>*</span> Agreement
+                              Type Institution
                             </label>
                             <div className="col-sm-8">
                               <select
-                                className="  form-control Vendor-form-control "
-                                {...register1("Country", {})}
+                                class="form-select Vendor-form-control"
+                                {...register1("agreement_type", {
+                                  required: true,
+                                })}
                               >
-                                <option defaultValue={UpdateDataFound.COUNTRY}>
-                                  {UpdateDataFound.COUNTRY}
+                                <option>Agreement Type Institution</option>
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.AGREEMENT_TYPE == "Govt."
+                                  }
+                                  selected
+                                >
+                                  Govt.
                                 </option>
-                                <option value="A">Option A</option>
-                                <option value="B">Option B</option>
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.AGREEMENT_TYPE == "Private"
+                                  }
+                                  selected
+                                >
+                                  Private
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -998,107 +623,84 @@ const Create_Vendor = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>Mobile
+                              <span style={{ color: "red" }}>*</span>
+                              Vendor Category
                             </label>
                             <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Mobile number"
-                                defaultValue={UpdateDataFound.MOBILE}
-                                // defaultValue={`${UpdateDataFound.MOBILE}`}
-                                {...register1("Mobile", {
-                                  pattern: /^01[35-9]\d{8}/,
-                                  maxLength: 11,
+                              <select
+                                class="form-select Vendor-form-control"
+                                {...register1("category_type", {
+                                  required: true,
                                 })}
-                              />
-                            </div>
+                              >
+                                <option>Select Vendor</option>
 
-                            {errors2.Mobile && (
-                              <p className="errorsMsg">
-                                {" "}
-                                Valid Mobile Number Required
-                              </p>
-                            )}
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              Fax
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder="Fax Number"
-                                defaultValue={UpdateDataFound.FAX}
-                                {...register1("Fax", {})}
-                              />
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.CATEGORY_TYPE == "Supplier"
+                                  }
+                                  selected
+                                >
+                                  Supplier
+                                </option>
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.CATEGORY_TYPE ==
+                                    "Contractor"
+                                  }
+                                  selected
+                                >
+                                  Contractor
+                                </option>
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.CATEGORY_TYPE ==
+                                    "Consultant"
+                                  }
+                                  selected
+                                >
+                                  Consultant
+                                </option>
+                              </select>
                             </div>
                           </div>
+
                           <div className="mb-2 row">
                             <label
                               for="inputtext"
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              Website
+                              <span style={{ color: "red" }}>*</span>Procurement
+                              Type
                             </label>
                             <div className="col-sm-8">
-                              <input
-                                type="text"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Website"
-                                defaultValue={UpdateDataFound.WEBSITE}
-                                {...register1("Website", {})}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span>Email
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="email"
-                                class="form-control Vendor-form-control"
-                                id="validationDefault03"
-                                placeholder=" Email"
-                                defaultValue={UpdateDataFound.EMAIL}
-                                {...register1("Email", {
-                                  pattern: /@/,
+                              <select
+                                class="form-select Vendor-form-control"
+                                {...register1("procurement_type", {
+                                  required: true,
                                 })}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row d-none">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span>Id
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="number"
-                                class="form-control Vendor-form-control"
-                                placeholder=" Id"
-                                id="validationDefault07"
-                                value={UpdateDataFound.ID}
-                                {...register1("id")}
-                                readOnly
-                              />
+                              >
+                                <option>Select procurement_type</option>
+
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.PROCUREMENT_TYPE == "DPM"
+                                  }
+                                  selected
+                                >
+                                  DPM
+                                </option>
+
+                                <option
+                                  defaultValue={
+                                    UpdateDataFound.PROCUREMENT_TYPE == "RFQ"
+                                  }
+                                  selected
+                                >
+                                  RFQ
+                                </option>
+                              </select>
                             </div>
                           </div>
 
@@ -1122,48 +724,8 @@ const Create_Vendor = () => {
               </div>
             </div>
           </div>
-          <div className="table-responsive">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Image</th>
-                  <th>pdf</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {getFileupload.map((row, index) => (
-                  <tr>
-                    <td>{row.NAME}</td>
-                    <td>{row.EMAIL}</td>
-                    <td>
-                      {" "}
-                      <img
-                        width="150px"
-                        src={`http://localhost:4328/uploads/${row.IMAGE}`}
-                      />{" "}
-                    </td>
-                    <td> {`http://localhost:4328/uploads/${row.FILE1}`} </td>
-                    <td>
-                      <button
-                        onClick={() =>
-                          DeleteFunctionality(row.EMAIL, row.IMAGE)
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-
-                {/* update vendor modal end  */}
-              </tbody>
-            </table>
-          </div>
         </div>
+
         {/* /Page Content */}
       </div>
     </>

@@ -2,9 +2,11 @@ import Axios from "axios";
 import { API_URL } from "./CommonUrlApi";
 
 export const ServiceProviders = async () => {
-  return await Axios.get(`${API_URL}posts`).then((res) => {
-    return res;
-  });
+  return await Axios.get("https://jsonplaceholder.typicode.com/posts").then(
+    (res) => {
+      return res;
+    }
+  );
 };
 // VendorInfoData
 export const VendorInfoData = async () => {
@@ -19,13 +21,31 @@ export const VendorInfoData = async () => {
     return res;
   });
 };
+//vendor details
+
+export const VendorDetailsData = async (vendor_id) => {
+  const token = localStorage.getItem("access_token");
+  Axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  return await Axios.get(`${API_URL}/vendor/Vendor_details`, {
+    headers: {
+      vendor_id:vendor_id,
+    },
+  }).then((res) => {
+    return res;
+  });
+};
+
 export const GetIndividual_VendorActive_data = async (id) => {
-  return await Axios.get(`${API_URL}posts/${id}`).then((res) => {
+  return await Axios.get(
+    `https://jsonplaceholder.typicode.com/posts/${id}`
+  ).then((res) => {
     return res;
   });
 };
 export const SearchDataFromApi = async (id) => {
-  return await Axios.get(`${API_URL}posts/${id}`).then((res) => {
+  return await Axios.get(
+    `https://jsonplaceholder.typicode.com/posts/${id}`
+  ).then((res) => {
     return res;
   });
 };

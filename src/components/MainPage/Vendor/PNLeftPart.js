@@ -26,9 +26,11 @@ const PNLeftPart = (props) => {
   const [searchStatus, setSearchStatus] = useState("");
   const [GetSearchData, setGetSearchData] = useState({});
   const [notFoundSearch, setnotFoundSearch] = useState(false);
+  const [name, setName] = useState("");
   /**for primarilly get service proveder data */
   useEffect(() => {
     console.log(props.id);
+    console.log(props.id4);
     GetServiceProviderData();
   }, []);
   const GetServiceProviderData = async () => {
@@ -37,6 +39,7 @@ const PNLeftPart = (props) => {
       const response = await ServiceProviders();
       if (response) {
         SetProvider(response.data);
+        // alert(JSON.stringify(response));
         setTimeout(() => {
           setDataLoader(false);
         }, 2000);
@@ -60,31 +63,46 @@ const PNLeftPart = (props) => {
     console.log("hello");
   };
   //search functionality
-  useEffect(() => {
-    const getUsers = () => {
-      fetch(`${API_URL}posts/${searchStatus}`)
-        .then((res) => {
-          // You have to send it, as I have done below
-          if (res.status >= 400) {
-            throw new Error("Server responds with error!");
-          }
-          return res.json();
-        })
-        .then(
-          (vendors) => {
-            setGetSearchData(vendors);
-            // GetServiceProviderData();
-            setnotFoundSearch(false);
-          },
+  const InputHandler = async (e) => {
+    e.preventDefault();
+    setSearchStatus(e.target.value);
+    axios
+      .get(`https://jsonplaceholder.typicode.com/posts/${e.target.value}`)
+      .then((res) => {
+        setGetSearchData(res.data);
+        // GetServiceProviderData();
+        setnotFoundSearch(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setnotFoundSearch(true);
+      });
+  };
+  // useEffect(() => {
+  //   const getUsers = () => {
+  //     fetch(`${API_URL}/posts/${searchStatus}`)
+  //       .then((res) => {
+  //         // You have to send it, as I have done below
+  //         if (res.status >= 400) {
+  //           throw new Error("Server responds with error!");
+  //         }
+  //         return res.json();
+  //       })
+  //       .then(
+  //         (vendors) => {
+  //           setGetSearchData(vendors);
+  //           // GetServiceProviderData();
+  //           setnotFoundSearch(false);
+  //         },
 
-          (err) => {
-            console.log(err);
-            setnotFoundSearch(true);
-          }
-        );
-    };
-    getUsers();
-  }, [searchStatus]);
+  //         (err) => {
+  //           console.log(err);
+  //           setnotFoundSearch(true);
+  //         }
+  //       );
+  //   };
+  //   getUsers();
+  // }, [searchStatus]);
   //using axios
   // useEffect(() => {
   //   axios
@@ -94,6 +112,11 @@ const PNLeftPart = (props) => {
   //       console.error(error);
   //     });
   // }, []);
+  const onSubmitData = (e) => {
+    e.preventDefault();
+    console.log(name);
+    props.onclickfunction(name);
+  };
   return (
     <>
       <div className="row ">
@@ -142,7 +165,7 @@ const PNLeftPart = (props) => {
                       value={searchStatus}
                       name="searchStatus"
                       placeholder="Search"
-                      onChange={(e) => setSearchStatus(e.target.value)}
+                      onChange={(e) => InputHandler(e)}
                     />
                   </div>
                   <div className="Product_leftSide_fixed_content">
@@ -273,7 +296,17 @@ const PNLeftPart = (props) => {
                 </div>
               </div>
             </div>
-
+            <form onSubmit={onSubmitData}>
+              <input
+                type="text"
+                name="abc"
+                value="kamal"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              ></input>
+              <input type="submit" name="btn" value="Submit" />
+            </form>
             <div className="col-md-8 mt-2 mb-2">
               {/* right product status */}
               <PNRightPart

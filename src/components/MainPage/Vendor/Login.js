@@ -28,7 +28,7 @@ const Login = ({ name, fuctioncall }) => {
           });
           cookies.set("name", "Ismaye90", {
             path: "/",
-            expires: new Date(Date.now() + 700 * 1000),
+            expires: new Date(Date.now() + 7000 * 1000),
             sameSite: "strict",
           });
 

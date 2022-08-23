@@ -3,6 +3,7 @@ import axios from "axios";
 import swal from "sweetalert";
 
 function FileUpload() {
+  const [progress, setProgress] = useState();
   const [userInfo, setuserInfo] = useState({
     file: [],
     file2: [],
@@ -51,6 +52,11 @@ function FileUpload() {
     axios
       .post("http://localhost:4328/file/file_upload", formdata, {
         headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (data) => {
+          //Set the progress value to show the progress bar
+          console.log(data);
+          setProgress(Math.round((100 * data.loaded) / data.total));
+        },
       })
       .then((res) => {
         // then print response status
@@ -127,7 +133,16 @@ function FileUpload() {
           </button>
         </div>
       </div>
-
+      <p>Progress:{progress}</p>
+      <div class="progress">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style={{ width: `${progress}%` }}
+        >
+          {progress}%
+        </div>
+      </div>
       {userInfo.filepreview !== null ? (
         <img
           className={`${userInfo.filepreview}`}

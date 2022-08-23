@@ -12,12 +12,12 @@ body {
   font-variant: tabular-nums;
   line-height: 1.5715;
 
-  background-color: #eeeeee;
+  background-color: #fbfbfb;
 
   font-feature-settings: "tnum", "tnum";
 }
 .modal-content {
-  background-color: #eeeeee;
+	background-color: #fdfdfd;
 }
 /* whole background color change end */
 /* create vendor css */
@@ -433,9 +433,44 @@ th {
   }
 }
 
-/* @media print {
-  #hddd {
-    color: red;
-    background-color: blue;
+@media print {
+  #noprint_btn {
+    display: none;
+  };
+  .conatct_file{
+    display: none;
   }
-} */
+  .noa_file {
+    display: none;
+  }
+}
+.viewNoa_details_head{
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .table-responsive1{
+    overflow:scroll
+  }
+}
+/* table .table-responsive cstomze */
+.table-responsive {
+  white-space: inherit;
+	width: 100%;
+}
+
+
+.iframe-pdf{
+  width:100%;
+  height:600px;
+}
+
+@media only screen and (max-width: 600px) {
+  .table-responsive1{
+    overflow:scroll
+  }
+  .iframe-pdf{
+    width:100%;
+    height:300px;
+  }
+}

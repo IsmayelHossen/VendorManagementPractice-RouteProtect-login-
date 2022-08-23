@@ -1,0 +1,10 @@
+#vendor_details .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+	position: relative;
+	padding: 0px 6px;
+	overflow-wrap: break-word;
+}
+.jodit-status-bar a.jodit-status-bar-link {
+	background-color: transparent;
+	color: rgba(0,0,0,.75);
+	display: none;
+}

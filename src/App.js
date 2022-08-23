@@ -22,6 +22,11 @@ import { checkIfAuthenticated } from "./components/MainPage/Vendor/AuthCheck";
 import CustomForm from "./components/MainPage/Vendor/CustomForm";
 import FileUpload from "./components/MainPage/Vendor/FileUpload";
 import SendMail from "./components/MainPage/Vendor/SendMail";
+import Vendor_Details from "./components/MainPage/Vendor/Vendor_Details";
+import Vendor_Branch from "./components/MainPage/Vendor/Vendor_Branch";
+import ViewNoa_details from "./components/MainPage/Vendor/ViewNoa_details";
+import ViewFileData from "./components/MainPage/Vendor/ViewFileData";
+import FileView from "./components/MainPage/Vendor/FileView";
 
 function App() {
   const [isLogdIn, setisLodIn] = useState(false);
@@ -64,10 +69,28 @@ function App() {
             <Route path="/*" element={<PrivateRoute />}>
               <Route path="vendor/add" element={<Create_Vendor />} />
               <Route
+                path="vendor/details/add/:id"
+                element={<Vendor_Details />}
+              />
+              <Route
+                path="vendor/ViewFileData/:vendor_id/:id/:type"
+                element={<ViewFileData />}
+              />
+              <Route
+                path="vendor/FileView/:vendor_id/:id/:filename"
+                element={<FileView />}
+              />
+
+              <Route
+                path="vendor/view_vendor_noadetails/:id/:vendor_id"
+                element={<ViewNoa_details />}
+              />
+
+              <Route path="vendor/branch/add" element={<Vendor_Branch />} />
+              <Route
                 path="vendor/product/status"
                 element={<ProductPurchase />}
               />
-              <Route path="vendor/product/order" element={<ProductOrdered />} />
               <Route
                 path="vendor/product/completion"
                 element={<ProductCompletion />}

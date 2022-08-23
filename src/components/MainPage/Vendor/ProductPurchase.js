@@ -116,7 +116,10 @@ const ProductPurchase = () => {
         console.log(error);
       });
   };
-
+  const propsOnclick = (data) => {
+    console.log("from product purchase");
+    console.log(data);
+  };
   return (
     <>
       <Helmet>
@@ -151,7 +154,7 @@ const ProductPurchase = () => {
             </div>
             <div class="card-body1">
               {/* left child PNLeftPart Included */}
-              <PNLeftPart />
+              <PNLeftPart id4="45640" onclickfunction={propsOnclick} />
             </div>
           </div>
           {/* card end */}
