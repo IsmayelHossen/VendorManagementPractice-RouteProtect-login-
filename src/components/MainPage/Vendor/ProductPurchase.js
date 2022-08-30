@@ -2,7 +2,7 @@
  * Product add information add and status page
  * two components PNLeftPart AND PNRightPart
  */
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -11,12 +11,15 @@ import { GetIndividual_VendorActive_data } from "./ApiCall";
 import swal from "sweetalert";
 import "../../../index.css";
 import "../Vendor/vendor.css";
-import PNLeftPart from "./PNLeftPart";
+// import PNLeftPart from "./PNLeftPart";
 import PNRightPart from "./PNRightPart";
+
 import { API_URL } from "./CommonUrlApi";
 import BBALOGO from "../../assets/img/BBA-logo.png";
 import Fade from "react-reveal/Fade";
 import axios from "axios";
+
+const PNLeftPart = React.lazy(() => import("./PNRightPart"));
 const ProductPurchase = () => {
   const [Edit_delete, SetEditDelete] = useState(true);
   const [Vendor_data, SetVendorData] = useState([]);
@@ -154,7 +157,9 @@ const ProductPurchase = () => {
             </div>
             <div class="card-body1">
               {/* left child PNLeftPart Included */}
-              <PNLeftPart id4="45640" onclickfunction={propsOnclick} />
+              <Suspense fallback={<div>Loading 1,2,...</div>}>
+                <PNLeftPart id4="45640" onclickfunction={propsOnclick} />
+              </Suspense>
             </div>
           </div>
           {/* card end */}

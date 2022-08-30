@@ -29,7 +29,7 @@ import {
   VendorInfoData,
 } from "../Vendor/ApiCall";
 
-const Create_Vendor = () => {
+const Create_Vendor = (props) => {
   const [DataLoader, setDataLoader] = useState(true);
   const [Vendor_data, SetVendorData] = useState([]);
   const [Vendor_Info, setVendorInfo] = useState([]);
@@ -42,7 +42,7 @@ const Create_Vendor = () => {
   useEffect(() => {
     document.title = "Vendor Add form";
     // document.getElementById("hddd").innerHTML = "";
-
+    console.log(props);
     VendorInfo();
 
     // getfromLaravel();
@@ -175,6 +175,13 @@ const Create_Vendor = () => {
           .then((response) => {
             if (response.data.success) {
               VendorInfo();
+            } else {
+              console.log(response);
+              swal({
+                title:
+                  "You have no ppermision to delete it,please inform it your nearest officer to delete the relevant data first",
+                icon: "warning",
+              });
             }
           })
           .catch((error) => {
@@ -257,7 +264,7 @@ const Create_Vendor = () => {
     {
       title: "Action",
       render: (text, record) => (
-        <div className="dropdown dropdown-action text-left">
+        <div className="dropdown dropdown-action">
           <a
             href="#"
             className="action-icon dropdown-toggle"
@@ -314,7 +321,7 @@ const Create_Vendor = () => {
                   className="text-center mx-auto mb-3 text-uppercase fddd"
                   id="hddd"
                 >
-                  Welcome To Vendor
+                  Welcome To Vendor{props.value12 } {console.log(props.value12)}
                 </h4>
               </div>
               {/* header */}
@@ -440,10 +447,12 @@ const Create_Vendor = () => {
                                   Select procurement_type
                                 </option>
                                 <option value="DPM">DPM</option>
-                                <option value="RFQ">RFQ</option>
+                                <option value="RFQ">RFQM</option>
                                 <option value="LTM">LTM</option>
                                 <option value="OTM">OTM</option>
                                 <option value="OSTM">OSTM</option>
+                                <option value="OSTETM">OSTETM</option>
+                                <option value="TSTM">TSTM</option>
                                 <option value="QCBS">QCBS</option>
                               </select>
                             </div>

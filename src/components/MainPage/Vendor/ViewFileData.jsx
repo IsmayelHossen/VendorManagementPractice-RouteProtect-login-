@@ -101,36 +101,47 @@ export default function ViewFileData() {
                   id="hddd"
                 >
                   {param.type}
-                  <button
+                  {/* <button
                     class="btn btn-success float-right"
                     onClick={() => navigate(-1)}
                   >
                     {" "}
                     back
-                  </button>
+                  </button> */}
                 </h4>
-                {Vendor_Info.filter((data) => data.ID == vendor_id).map(
-                  (row) => (
-                    <>
-                      <p>
-                        {row.VENDOR_NAME}({row.CATEGORY_TYPE})
-                      </p>
-                    </>
-                  )
-                )}
+                <div class="d-flex justify-content-between">
+                  <div>
+                    {Vendor_Info.filter((data) => data.ID == vendor_id).map(
+                      (row) => (
+                        <>
+                          <p style={{ marginBottom: "0px" }}>
+                            {row.VENDOR_NAME}({row.CATEGORY_TYPE})
+                          </p>
+                        </>
+                      )
+                    )}
 
-                {/* from details table */}
-                {Details.filter((data) => data.ID == Id).map((row) => (
-                  <>
-                    <p>
-                      Date:
-                      {row.DATE1}
-                      <br></br>
-                      Memo:
-                      {row.MEMO_NO}
-                    </p>
-                  </>
-                ))}
+                    {/* from details table */}
+                    {Details.filter((data) => data.ID == Id).map((row) => (
+                      <>
+                        <p>
+                          Date:
+                          {new Date(row.DATE1).getDate() +
+                            "-" +
+                            new Date(row.DATE1).getMonth() +
+                            "-" +
+                            new Date(row.DATE1).getFullYear()}
+                          <br></br>
+                          Memo:
+                          {row.MEMO_NO}
+                        </p>
+                      </>
+                    ))}
+                  </div>
+                  <div>
+                    <button class="btn btn-primary">Add more File</button>
+                  </div>
+                </div>
               </div>
               {/* header */}
             </div>
@@ -171,9 +182,6 @@ export default function ViewFileData() {
                               </Link>
                             </td>
                             <td>
-                              <button class="btn btn-primary mr-2 mb-1">
-                                <span class="fa fa-pencil"></span>
-                              </button>
                               <button
                                 class="btn btn-danger "
                                 onClick={() => DeleteFile(row.ID, row.FILENAME)}

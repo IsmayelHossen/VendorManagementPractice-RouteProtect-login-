@@ -474,3 +474,12 @@ th {
     height:300px;
   }
 }
+.jodit-status-bar-link{
+  display:none;
+}
+tbody, td, tfoot, th, thead, tr {
+	border-color: inherit;
+	border-style: solid;
+	border-width: 0;
+	padding: 4px;
+}

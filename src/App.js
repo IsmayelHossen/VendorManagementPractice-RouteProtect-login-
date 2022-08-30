@@ -27,7 +27,7 @@ import Vendor_Branch from "./components/MainPage/Vendor/Vendor_Branch";
 import ViewNoa_details from "./components/MainPage/Vendor/ViewNoa_details";
 import ViewFileData from "./components/MainPage/Vendor/ViewFileData";
 import FileView from "./components/MainPage/Vendor/FileView";
-
+import { ThemeContext } from "./components/MainPage/Vendor/CommonUrlApi";
 function App() {
   const [isLogdIn, setisLodIn] = useState(false);
   const [isAuth, setisAuth] = useState(false);
@@ -42,14 +42,19 @@ function App() {
     // console.log(isAuth);
     // Navigat(`vendor/add`);
   };
+  const data = localStorage.getItem("LoginData");
+  const loginData = JSON.parse(data);
+  console.log(loginData.email);
   return (
     <div className="App">
       {/* {console.log(isAuth)} */}
+
       <BrowserRouter>
-        <Sidebar />
-        <Header />
-        <Routes>
-          {/* <Route
+        <ThemeContext.Provider value={{ count: loginData.email }}>
+          <Sidebar />
+          <Header />
+          <Routes>
+            {/* <Route
             exact
             path="/"
             element={
@@ -59,78 +64,84 @@ function App() {
               </>
             }   
           ></Route> */}
-          {/* <Protected path="/" isAuth={isAuth} element={<Dashboard />} /> */}
-          {/* index means path is "/" */}
+            {/* <Protected path="/" isAuth={isAuth} element={<Dashboard />} /> */}
+            {/* index means path is "/" */}
 
-          {/* <Route index element={<Dashboard />} /> */}
+            {/* <Route index element={<Dashboard />} /> */}
 
-          <>
-            {/* this the authentication system for routes start */}
-            <Route path="/*" element={<PrivateRoute />}>
-              <Route path="vendor/add" element={<Create_Vendor />} />
-              <Route
-                path="vendor/details/add/:id"
-                element={<Vendor_Details />}
-              />
-              <Route
-                path="vendor/ViewFileData/:vendor_id/:id/:type"
-                element={<ViewFileData />}
-              />
-              <Route
-                path="vendor/FileView/:vendor_id/:id/:filename"
-                element={<FileView />}
-              />
+            <>
+              {/* this the authentication system for routes start */}
+
+              <Route path="/*" element={<PrivateRoute />}>
+                <Route path="vendor/add" element={<Create_Vendor />} />
+                <Route
+                  path="vendor/details/add/:id"
+                  element={<Vendor_Details />}
+                />
+                <Route
+                  path="vendor/ViewFileData/:vendor_id/:id/:type"
+                  element={<ViewFileData />}
+                />
+                <Route
+                  path="vendor/FileView/:vendor_id/:id/:filename"
+                  element={<FileView />}
+                />
+
+                <Route
+                  path="vendor/view_vendor_noadetails/:id/:vendor_id"
+                  element={<ViewNoa_details />}
+                />
+
+                <Route path="vendor/branch/add" element={<Vendor_Branch />} />
+                <Route
+                  path="vendor/product/status"
+                  element={<ProductPurchase />}
+                />
+                <Route
+                  path="vendor/product/completion"
+                  element={<ProductCompletion />}
+                />
+              </Route>
 
               <Route
-                path="vendor/view_vendor_noadetails/:id/:vendor_id"
-                element={<ViewNoa_details />}
+                path="/vendor/service/status"
+                element={<ServicePurchase />}
               />
+              <Route
+                path="/vendor/service/order"
+                element={<ServiceOrdered />}
+              />
+              <Route
+                path="/vendor/service/completion"
+                element={<ServiceOrdered />}
+              />
+              {/* this the authentication system for routes end */}
+            </>
 
-              <Route path="vendor/branch/add" element={<Vendor_Branch />} />
-              <Route
-                path="vendor/product/status"
-                element={<ProductPurchase />}
-              />
-              <Route
-                path="vendor/product/completion"
-                element={<ProductCompletion />}
-              />
-            </Route>
+            <Route path="/customform" element={<CustomForm />} />
+            <Route exact path="/test" element={<Testcase />} />
+            <Route exact path="/mail" element={<SendMail />} />
+            <Route exact path="/test2" element={<Testcase2 />} />
             <Route
-              path="/vendor/service/status"
-              element={<ServicePurchase />}
+              path="/vendor/login"
+              element={<Login name="ismayel" fuctioncall={functioncall} />}
+              // element={
+              //   checkIfAuthenticated() ? (
+              //     <Create_Vendor />
+              //   ) : (
+              //     <Login name="ismayel" fuctioncall={functioncall} />
+              //   )
+              // }
             />
-            <Route path="/vendor/service/order" element={<ServiceOrdered />} />
             <Route
-              path="/vendor/service/completion"
-              element={<ServiceOrdered />}
+              path="/vendor/signup"
+              element={checkIfAuthenticated() ? <Create_Vendor /> : <Signup />}
             />
-            {/* this the authentication system for routes end */}
-          </>
-
-          <Route path="/customform" element={<CustomForm />} />
-          <Route exact path="/test" element={<Testcase />} />
-          <Route exact path="/mail" element={<SendMail />} />
-          <Route exact path="/test2" element={<Testcase2 />} />
-          <Route
-            path="/vendor/login"
-            element={<Login name="ismayel" fuctioncall={functioncall} />}
-            // element={
-            //   checkIfAuthenticated() ? (
-            //     <Create_Vendor />
-            //   ) : (
-            //     <Login name="ismayel" fuctioncall={functioncall} />
-            //   )
-            // }
-          />
-          <Route
-            path="/vendor/signup"
-            element={checkIfAuthenticated() ? <Create_Vendor /> : <Signup />}
-          />
-          <Route path="/fileupload" element={<FileUpload />} />
-          <Route path="/vendor/*" element={<NoPage />} />
-          <Route path="*" element={<NoPage />} />
-        </Routes>
+            <Route path="/fileupload" element={<FileUpload />} />
+            <Route path="/vendor/*" element={<NoPage />} />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        </ThemeContext.Provider>
       </BrowserRouter>
     </div>
   );

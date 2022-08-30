@@ -1,7 +1,7 @@
 /**
  * Vendor Add Information component
  */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { lazy, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -19,7 +19,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import "../../../index.css";
 import "../Vendor/vendor.css";
-import { PUBLIC_URL, API_URL } from "../Vendor/CommonUrlApi";
+import { PUBLIC_URL, API_URL, ThemeContext } from "../Vendor/CommonUrlApi";
 import VendorEdit from "./VendorEdit";
 import JoditEditor from "jodit-react";
 import { Markup } from "interweave";
@@ -29,6 +29,8 @@ import {
   VendorInfoData,
 } from "../Vendor/ApiCall";
 import { useRef } from "react";
+import { Suspense } from "react";
+import { useContext } from "react";
 
 const Vendor_Details = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -53,7 +55,7 @@ const Vendor_Details = () => {
   const params = useParams();
   const [progress, setProgress] = useState();
   const vendor_id = params.id;
-
+  const [progressbarS, setProgressbarS] = useState(false);
   const {
     register,
     handleSubmit,
@@ -157,24 +159,14 @@ const Vendor_Details = () => {
 
     //  console.log(today.toLocaleDateString("Asia/Dhaka")); // 9/17/2016
     if (data.contact_file.length > 0) {
-      if (data.contact_file.length > 1) {
-        console.log(data.contact_file.length);
-        for (let i = 0; i < data.contact_file.length; i++) {
-          formdata.append("pdf", data.contact_file[i]);
-        }
-      } else {
-        formdata.append("pdf", data.contact_file[0]);
+      for (let i = 0; i < data.contact_file.length; i++) {
+        formdata.append("pdf", data.contact_file[i]);
       }
     }
 
     if (data.noa_file.length > 0) {
-      if (data.noa_file.length > 1) {
-        console.log(data.noa_file.length);
-        for (let j = 0; j < data.noa_file.length; j++) {
-          formdata.append("img", data.noa_file[j]);
-        }
-      } else {
-        formdata.append("img", data.noa_file[0]);
+      for (let j = 0; j < data.noa_file.length; j++) {
+        formdata.append("img", data.noa_file[j]);
       }
     }
 
@@ -204,6 +196,7 @@ const Vendor_Details = () => {
         onUploadProgress: (data) => {
           //Set the progress value to show the progress bar
           console.log(data);
+          setProgressbarS(true);
           setProgress(Math.round((100 * data.loaded) / data.total));
         },
       })
@@ -957,15 +950,18 @@ const Vendor_Details = () => {
                                   ></textarea>
                                 </div>
                               </div>
-                              <div class="progress mb-2">
-                                <div
-                                  class="progress-bar"
-                                  role="progressbar"
-                                  style={{ width: `${progress}%` }}
-                                >
-                                  {progress}%
+                              {progressbarS && (
+                                <div class="progress mb-2">
+                                  <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style={{ width: `${progress}%` }}
+                                  >
+                                    {progress}%
+                                  </div>
                                 </div>
-                              </div>
+                              )}
+
                               <div className="SubmitFooter">
                                 <button type="submit" class="Button_success">
                                   <span>Submit</span>
@@ -985,6 +981,7 @@ const Vendor_Details = () => {
                     </div>
                   </div>
                   {/* table start */}
+
                   <div className="row">
                     <div className="col-md-12">
                       {!DataLoader && (
@@ -996,13 +993,13 @@ const Vendor_Details = () => {
                               class="fa fa-spinner fa-spin fa-3x fa-fw"
                               style={{ color: "green", fontSiz: "20px" }}
                             ></i>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">Loading.nnnn..</span>
                           </p>
                         </>
                       )}
                       {DataLoader && (
                         <div class="table-responsive">
-                          <table class=" table-striped">
+                          <table class="table table-striped">
                             <thead>
                               <tr>
                                 <th>SI</th>
@@ -1038,29 +1035,37 @@ const Vendor_Details = () => {
                                   <td>{row.MEMO_NO}</td>
                                   <td>{row.TOTAL_AMOUNT}</td>
                                   <td>{row.PAYMENT_STATUS}</td>
-                                  <td>{row.DATE1}</td>
-                                  <td>{row.TENDER_DATE}</td>
-                                  <td class="text-center">
+                                  <td>
+                                    {new Date(row.DATE1).getDate() +
+                                      "-" +
+                                      new Date(row.DATE1).getMonth() +
+                                      "-" +
+                                      new Date(row.DATE1).getFullYear()}
+                                  </td>
+                                  <td>
+                                    {new Date(row.TENDER_DATE).getDate() +
+                                      "-" +
+                                      new Date(row.TENDER_DATE).getMonth() +
+                                      "-" +
+                                      new Date(row.TENDER_DATE).getFullYear()}
+                                  </td>
+                                  <td>
                                     <Link
                                       to={`/vendor/ViewFileData/${vendor_id}/${row.ID}/contract File`}
                                     >
                                       <span
-                                        class="fa fa-eye"
-                                        style={{
-                                          fontSize: "20px",
-                                        }}
+                                        class=" text-center text-success fa fa-eye"
+                                        style={{ fontSize: "25px" }}
                                       ></span>
                                     </Link>
                                   </td>
-                                  <td class="text-center">
+                                  <td>
                                     <Link
                                       to={`/vendor/ViewFileData/${vendor_id}/${row.ID}/Noa File`}
                                     >
                                       <span
-                                        class="fa fa-eye"
-                                        style={{
-                                          fontSize: "20px",
-                                        }}
+                                        class="text-center font-size-20 fa fa-eye"
+                                        style={{ fontSize: "25px" }}
                                       ></span>
                                     </Link>
                                   </td>

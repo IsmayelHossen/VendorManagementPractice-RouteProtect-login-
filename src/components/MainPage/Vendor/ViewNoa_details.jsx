@@ -217,7 +217,6 @@ const ViewNoa_details = () => {
                       </p>
                       <p>Remark: {viewDetails.REMARKS} </p>
 
-                      <p>Status: {viewDetails.STATUS}</p>
                       <p>Working Type: {viewDetails.WORKING_TYPE}</p>
                     </td>
                   </tr>
@@ -230,7 +229,6 @@ const ViewNoa_details = () => {
                         Vendor Entry Designation:{" "}
                         {viewDetails.VENDOR_ENTRY_DESIGNATION}
                       </p>
-                  
                     </td>
                   </tr>
                 </tbody>
