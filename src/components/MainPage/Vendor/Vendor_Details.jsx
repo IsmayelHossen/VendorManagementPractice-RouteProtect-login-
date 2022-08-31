@@ -512,7 +512,23 @@ const Vendor_Details = () => {
         {/* Page Content */}
         <div className="content container-fluid">
           {/* Page Header */}
-          {!Loadder && <>Data Loadding....</>}
+          {!Loadder && (
+            <>
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style={{ marginTop: "8em" }}>
+                  <div
+                    class="spinner-border text-warning"
+                    style={{ width: "3rem", height: "3rem" }}
+                    role="status"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </>
+          )}
           {Loadder && (
             <>
               <div class="">

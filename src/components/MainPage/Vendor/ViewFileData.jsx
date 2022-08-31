@@ -11,6 +11,7 @@ export default function ViewFileData() {
   const [fileData, setfileData] = useState([]);
   const [Vendor_Info, setVendorInfo] = useState([]);
   const [Details, setDetails] = useState([]);
+  const [Loadder, setLoadder] = useState(true);
   const navigate = useNavigate();
   const param = useParams();
   const vendor_id = param.vendor_id;
@@ -24,7 +25,7 @@ export default function ViewFileData() {
       .get(`${API_URL}/vendor/viewfileData/${param.id}/${param.type}`)
       .then((response) => {
         setfileData(response.data.data);
-        console.log(response.data);
+        setLoadder(false);
       });
   };
 
@@ -149,51 +150,77 @@ export default function ViewFileData() {
               {/* /Page Header */}
 
               {/* table start */}
+              {Loadder && (
+                <>
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 ">
+                      <div class="d-flex justify-content-center">
+                        <div
+                          class="spinner-border mt-5 text-warning"
+                          role="status"
+                        >
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                  </div>
+                </>
+              )}
               <div className="row">
                 <div className="col-md-12">
-                  <div className="table-responsive ">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>SI</th>
-                          <th>File Name</th>
-                          <th>Size</th>
-                          <th>Download</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {fileData.map((row, index) => (
+                  {!Loadder && (
+                    <div className="table-responsive ">
+                      <table class="table table-hover">
+                        <thead>
                           <tr>
-                            <td>{index + 1}</td>
-                            <td>{row.FILENAME}</td>
-                            <td>
-                              {row.FILESIZE / 1024 > 1024
-                                ? (row.FILESIZE / 1024 / 1024).toPrecision(4) +
-                                  " Mb"
-                                : (row.FILESIZE / 1024).toPrecision(4) + " Kb"}
-                            </td>
-                            <td>
-                              <Link
-                                class="btn btn-success"
-                                to={`/vendor/FileView/${vendor_id}/${Id}/${row.FILENAME}`}
-                              >
-                                <span class="fa fa-download"></span>
-                              </Link>
-                            </td>
-                            <td>
-                              <button
-                                class="btn btn-danger "
-                                onClick={() => DeleteFile(row.ID, row.FILENAME)}
-                              >
-                                <span class="fa fa-trash"></span>
-                              </button>
-                            </td>
+                            <th>SI</th>
+                            <th>File Name</th>
+                            <th>Size</th>
+                            <th>Download</th>
+                            <th>Action</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          <>
+                            {fileData.map((row, index) => (
+                              <tr>
+                                <td>{index + 1}</td>
+                                <td>{row.FILENAME}</td>
+                                <td>
+                                  {row.FILESIZE / 1024 > 1024
+                                    ? (row.FILESIZE / 1024 / 1024).toPrecision(
+                                        4
+                                      ) + " Mb"
+                                    : (row.FILESIZE / 1024).toPrecision(4) +
+                                      " Kb"}
+                                </td>
+                                <td>
+                                  <Link
+                                    class="btn btn-success"
+                                    to={`/vendor/FileView/${vendor_id}/${Id}/${row.FILENAME}`}
+                                  >
+                                    <span class="fa fa-download"></span>
+                                  </Link>
+                                </td>
+                                <td>
+                                  <button
+                                    class="btn btn-danger "
+                                    onClick={() =>
+                                      DeleteFile(row.ID, row.FILENAME)
+                                    }
+                                  >
+                                    <span class="fa fa-trash"></span>
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -31,7 +31,7 @@ import {
 import { ThemeContext } from "../Vendor/CommonUrlApi";
 
 const Vendor_Branch = () => {
-  const [DataLoader, setDataLoader] = useState(true);
+  const [Loadder, setLoadder] = useState(true);
   const [Vendor_data, SetVendorData] = useState([]);
   const [Vendor_Info, setVendorInfo] = useState([]);
   const [search_vendor_data, setsearch_vendor_data] = useState("");
@@ -52,10 +52,8 @@ const Vendor_Branch = () => {
     await axios
       .get(`${API_URL}/vendor/branch/get`)
       .then((res) => {
-        console.log(res.data);
-        console.log(res.headers);
-        console.log("2nd");
         setvendorBranch(res.data.data);
+        setLoadder(false);
       })
       .catch((error) => {
         console.log(error);
@@ -446,20 +444,24 @@ const Vendor_Branch = () => {
               {/* table start */}
               <div className="row">
                 <div className="col-md-12">
-                  {!DataLoader && (
+                  {Loadder && (
                     <>
-                      {/* DataLoader */}
-                      <p className="text-center mt-5">
-                        {" "}
-                        <i
-                          class="fa fa-spinner fa-spin fa-3x fa-fw"
-                          style={{ color: "green", fontSiz: "20px" }}
-                        ></i>
-                        <span class="sr-only">Loading...</span>
-                      </p>
+                      <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4" style={{ marginTop: "8em" }}>
+                          <div
+                            class="spinner-border text-warning"
+                            style={{ width: "3rem", height: "3rem" }}
+                            role="status"
+                          >
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                      </div>
                     </>
                   )}
-                  {DataLoader && (
+                  {!Loadder && (
                     <div className="table-responsive vendor_table_box">
                       <Table
                         className="table-striped"
