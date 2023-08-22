@@ -36,7 +36,7 @@ const Login = ({ name, fuctioncall }) => {
 
           //    fuctioncall(res);
           localStorage.setItem("LoginData", JSON.stringify(res.data));
-
+          sessionStorage.setItem("hi7", 78);
           //Navigat(`/vendor/add`);
           window.location.href = "/vendor/add";
         } else if (res.data.Success1) {

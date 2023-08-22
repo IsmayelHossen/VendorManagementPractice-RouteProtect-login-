@@ -42,9 +42,12 @@ function App() {
     // console.log(isAuth);
     // Navigat(`vendor/add`);
   };
-  const data = localStorage.getItem("LoginData");
-  const loginData = JSON.parse(data);
-  console.log(loginData.email);
+  const data = localStorage.getItem("LoginData")
+    ? localStorage.getItem("LoginData")
+    : "";
+  localStorage.getItem("LoginData");
+  const loginData = data ? JSON.parse(data) : "";
+
   return (
     <div className="App">
       {/* {console.log(isAuth)} */}

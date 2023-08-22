@@ -177,6 +177,7 @@ export default function ViewFileData() {
                           <tr>
                             <th>SI</th>
                             <th>File Name</th>
+                            <th>Upload Time</th>
                             <th>Size</th>
                             <th>Download</th>
                             <th>Action</th>
@@ -188,6 +189,17 @@ export default function ViewFileData() {
                               <tr>
                                 <td>{index + 1}</td>
                                 <td>{row.FILENAME}</td>
+                                <td>
+                                  {row.TIMEDATE
+                                    ? new Date(row.TIMEDATE).getDate() +
+                                      "-" +
+                                      new Date(row.TIMEDATE).getMonth() +
+                                      "-" +
+                                      new Date(row.TIMEDATE).getFullYear() +
+                                      "," +
+                                      row.TIMEDATE.split(",")[1]
+                                    : "---"}
+                                </td>
                                 <td>
                                   {row.FILESIZE / 1024 > 1024
                                     ? (row.FILESIZE / 1024 / 1024).toPrecision(

@@ -40,7 +40,6 @@ const Create_Vendor = (props) => {
   const [getFileupload, setgetFileupload] = useState([]);
 
   useEffect(() => {
-    document.title = "Vendor Add form";
     // document.getElementById("hddd").innerHTML = "";
     console.log(props);
     VendorInfo();
@@ -80,8 +79,7 @@ const Create_Vendor = (props) => {
     axios
       .post(`${API_URL}/vendor/add_vendor`, data, {
         headers: {
-          "Content-Type": "application/json",
-          name: "ismayel56777",
+          name: "ismayel",
           Email: "ismayelhossen123@gmail.com",
         },
       })
@@ -175,6 +173,12 @@ const Create_Vendor = (props) => {
           .delete(`${API_URL}/vendor/delete_vendor/${id}`)
           .then((response) => {
             if (response.data.success) {
+              swal({
+                title: "Good job!",
+                text: "Successfully data deleted!",
+                icon: "success",
+                button: "ok!",
+              });
               VendorInfo();
             } else {
               console.log(response);
@@ -255,7 +259,7 @@ const Create_Vendor = (props) => {
       render: (text, record) => (
         <Link
           class="btn btn-primary btn-small"
-          to={`/vendor/details/add/${record.ID}`}
+          to={`/vendor/details/add/${record.ID}?name12=ismayel`}
         >
           <span class="fa fa-eye"></span>
         </Link>
@@ -307,7 +311,7 @@ const Create_Vendor = (props) => {
   return (
     <>
       <Helmet>
-        <title>Dashboard - BBA STORE</title>
+        <title>Add Vendor </title>
         <meta name="description" content="BBA STORE" />
       </Helmet>
       {/* Header */}
@@ -507,8 +511,12 @@ const Create_Vendor = (props) => {
                         <div class="col-md-4"></div>
                         <div class="col-md-4" style={{ marginTop: "8em" }}>
                           <div
-                            class="spinner-border text-warning"
-                            style={{ width: "3rem", height: "3rem" }}
+                            class="spinner-border"
+                            style={{
+                              width: "3rem",
+                              height: "3rem",
+                              color: "#6877E0",
+                            }}
                             role="status"
                           >
                             <span class="sr-only">Loading...</span>

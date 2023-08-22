@@ -3,7 +3,12 @@
  */
 import React, { lazy, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -53,6 +58,7 @@ const Vendor_Details = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const params = useParams();
+  const searchParam = useSearchParams();
   const [progress, setProgress] = useState();
   const vendor_id = params.id;
   const [progressbarS, setProgressbarS] = useState(false);
@@ -73,7 +79,7 @@ const Vendor_Details = () => {
   useEffect(() => {
     document.title = "Vendor Add form";
     // document.getElementById("hddd").innerHTML = "";
-
+    console.log(searchParam[0].get("name12"));
     VendorInfo();
     VendorBranch();
     Vendordetails();
@@ -518,8 +524,8 @@ const Vendor_Details = () => {
                 <div class="col-md-4"></div>
                 <div class="col-md-4" style={{ marginTop: "8em" }}>
                   <div
-                    class="spinner-border text-warning"
-                    style={{ width: "3rem", height: "3rem" }}
+                    class="spinner-border"
+                    style={{ width: "3rem", height: "3rem", color: "#6877E0" }}
                     role="status"
                   >
                     <span class="sr-only">Loading...</span>
@@ -1033,7 +1039,7 @@ const Vendor_Details = () => {
                                 <th>Performance Security</th>
                                 <th>NOA Acceptor</th>
                                 <th>NOA CC</th>
-                                <th>Vendor info entry name</th>
+                                <th>entry name</th>
                                 <th>Store Acceptor Name</th>
                                 <th>Product Details</th>
                                 <th>Remarks</th>
